@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
     id "androidx.navigation.safeargs.kotlin"
@@ -9,16 +9,11 @@ plugins {
 apply from: '../dependencies.gradle'
 
 android {
-    compileSdk compSdkVersion
+    compileSdkVersion compSdkVersion
 
     defaultConfig {
-        applicationId "ru.coolhabit.currencyconverter"
         minSdkVersion mSdkVersion
         targetSdkVersion tarSdkVersion
-        versionCode 1
-        versionName "1.0"
-        vectorDrawables.useSupportLibrary = true
-        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -27,10 +22,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-    }
-
-    buildFeatures {
-        viewBinding true
     }
 
     compileOptions {
@@ -47,6 +38,10 @@ android {
         ]
     }
 
+    buildFeatures {
+        viewBinding true
+    }
+
     kapt {
         arguments {
             arg("dagger.fastInit", "enabled")
@@ -55,21 +50,30 @@ android {
 }
 
 dependencies {
-    testImplementation junit
-    androidTestImplementation android_test
-
-    implementation appcompat
-    implementation material
-    implementation constraintlayout
-    coreLibraryDesugaring desugaring
-
     implementation core_ktx
     kapt kotlinx_metadata
     coreLibraryDesugaring desugaring
 
-    // coroutines
-    implementation kotlinx_coroutines_core
-    implementation kotlinx_coroutines_android
+    testImplementation junit
+    androidTestImplementation android_test
+
+    // android
+    implementation appcompat
+    implementation material
+    implementation constraintlayout
+    implementation fragment_ktx
+    implementation viewpager2
+    implementation swiperefreshlayout
+    implementation recyclerview
+
+    // viewModel and liveData
+    implementation lifecycle_runtime_ktx
+    implementation lifecycle_common_java8
+    implementation lifecycle_viewmodel_ktx
+    //noinspection LifecycleAnnotationProcessorWithJava8
+    kapt lifecycle_compiler
+    implementation lifecycle_process
+    implementation lifecycle_extensions
 
     // dagger 2
     implementation dagger
@@ -82,15 +86,6 @@ dependencies {
     implementation navigation_fragment_ktx
     implementation navigation_ui_ktx
 
-    implementation okhttp
-
-    implementation retrofit
-    implementation retrofit_gson
-    implementation retrofit_log
-
-    implementation project(':baseUI')
-    implementation project(':data')
-    implementation project(':domain')
-    implementation project(':currency')
-
+    implementation glide_core
+    kapt glide_kapt
 }

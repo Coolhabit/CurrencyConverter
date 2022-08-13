@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
     id "androidx.navigation.safeargs.kotlin"
@@ -9,16 +9,11 @@ plugins {
 apply from: '../dependencies.gradle'
 
 android {
-    compileSdk compSdkVersion
+    compileSdkVersion compSdkVersion
 
     defaultConfig {
-        applicationId "ru.coolhabit.currencyconverter"
         minSdkVersion mSdkVersion
         targetSdkVersion tarSdkVersion
-        versionCode 1
-        versionName "1.0"
-        vectorDrawables.useSupportLibrary = true
-        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -27,10 +22,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-    }
-
-    buildFeatures {
-        viewBinding true
     }
 
     compileOptions {
@@ -47,6 +38,10 @@ android {
         ]
     }
 
+    buildFeatures {
+        viewBinding true
+    }
+
     kapt {
         arguments {
             arg("dagger.fastInit", "enabled")
@@ -58,13 +53,7 @@ dependencies {
     testImplementation junit
     androidTestImplementation android_test
 
-    implementation appcompat
-    implementation material
-    implementation constraintlayout
-    coreLibraryDesugaring desugaring
-
     implementation core_ktx
-    kapt kotlinx_metadata
     coreLibraryDesugaring desugaring
 
     // coroutines
@@ -82,15 +71,9 @@ dependencies {
     implementation navigation_fragment_ktx
     implementation navigation_ui_ktx
 
-    implementation okhttp
-
-    implementation retrofit
-    implementation retrofit_gson
-    implementation retrofit_log
+    implementation glide_core
+    kapt glide_kapt
 
     implementation project(':baseUI')
-    implementation project(':data')
     implementation project(':domain')
-    implementation project(':currency')
-
 }
