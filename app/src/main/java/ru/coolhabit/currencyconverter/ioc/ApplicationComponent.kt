@@ -5,16 +5,20 @@ import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import ru.coolhabit.currencyconverter.ConcurrencyApp
+import ru.coolhabit.currencyconverter.ioc.modules.ActivityModule
+import ru.coolhabit.currencyconverter.ioc.modules.ApplicationModule
+import ru.coolhabit.currencyconverter.ioc.modules.FragmentsModule
+import ru.coolhabit.currencyconverter.ioc.modules.ViewModelModule
 import javax.inject.Singleton
 
 @Singleton
 @Component(
     modules = [
         AndroidSupportInjectionModule::class,
-//        ViewModelModule::class,
-//        ActivityModule::class,
-//        ApplicationModule::class,
-//        FragmentsModule::class,
+        ViewModelModule::class,
+        ActivityModule::class,
+        ApplicationModule::class,
+        FragmentsModule::class,
 //        UseCasesModule::class,
 //        NavigationRoutersModule::class,
 //        ApiModule::class,

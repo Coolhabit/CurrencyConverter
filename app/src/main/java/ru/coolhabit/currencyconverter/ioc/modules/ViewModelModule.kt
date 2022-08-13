@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
+import ru.coolhabit.currencyconverter.currency.presentation.CurrencyViewModel
+import ru.coolhabit.currencyconverter.favs.presentation.FavsViewModel
 import ru.coolhabit.currencyconverter.ioc.utils.ViewModelFactory
 import ru.coolhabit.currencyconverter.ioc.utils.ViewModelKey
 import ru.coolhabit.currencyconverter.presentation.MainActivityViewModel
@@ -20,23 +22,13 @@ abstract class ViewModelModule {
     @ViewModelKey(MainActivityViewModel::class)
     abstract fun mainActivityViewModel(viewModel: MainActivityViewModel): ViewModel
 
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(HeroesViewModel::class)
-//    abstract fun heroesViewModel(viewModel: HeroesViewModel): ViewModel
-//
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(ComicsViewModel::class)
-//    abstract fun comicsViewModel(viewModel: ComicsViewModel): ViewModel
-//
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(MyAvengersViewModel::class)
-//    abstract fun myAvengersViewModel(viewModel: MyAvengersViewModel): ViewModel
-//
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(SettingsViewModel::class)
-//    abstract fun settingsViewModel(viewModel: SettingsViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(CurrencyViewModel::class)
+    abstract fun currencyViewModel(viewModel: CurrencyViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FavsViewModel::class)
+    abstract fun favsViewModel(viewModel: FavsViewModel): ViewModel
 }

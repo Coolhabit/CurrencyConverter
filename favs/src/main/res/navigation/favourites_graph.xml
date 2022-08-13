@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/favourites_graph"
+    app:startDestination="@id/fragments_favourites">
+
+    <fragment
+        android:id="@+id/fragments_favourites"
+        android:name="ru.coolhabit.currencyconverter.favs.presentation.FavsFragment"
+        tools:layout="@layout/fragment_favs">
+    </fragment>
+
+</navigation>
