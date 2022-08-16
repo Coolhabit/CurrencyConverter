@@ -21,4 +21,16 @@ class CurrencyViewModel @Inject constructor(
             _loadCurrency.emit(useCase.getCurrencyList())
         }
     }
+
+    fun addToFavourite(currency: Currency) {
+        viewModelScope.launch {
+            useCase.addCurrencyToFav(currency)
+        }
+    }
+
+    fun removeFromFavourite(currency: Currency) {
+        viewModelScope.launch {
+            useCase.removeCurrencyFromFav(currency)
+        }
+    }
 }

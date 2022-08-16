@@ -9,10 +9,13 @@ import ru.coolhabit.currencyconverter.entities.dto.Currency
 import javax.inject.Inject
 
 class CurrencyListAdapter @Inject constructor() : ListAdapter<Currency, CurrencyListViewHolder>(CurrencyListDiffUtils()) {
+
+    var onFavClick: (Currency) -> Unit = {}
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyListViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = RvCurrencyItemBinding.inflate(inflater, parent, false)
-        return CurrencyListViewHolder(binding)
+        return CurrencyListViewHolder(binding, onFavClick)
     }
 
     override fun onBindViewHolder(holder: CurrencyListViewHolder, position: Int) {

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import ru.coolhabit.currencyconverter.currency.R
 import ru.coolhabit.currencyconverter.currency.databinding.FragmentCurrencyBinding
 import ru.coolhabit.currencyconverter.currency.presentation.adapter.CurrencyListAdapter
@@ -56,6 +57,23 @@ class CurrencyFragment : BaseFragment(R.layout.fragment_currency) {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.loadCurrency.collect {
                 currencyAdapter.submitList(it)
+            }
+        }
+
+        currencyAdapter.onFavClick = {
+            if (it.isFav) {
+                viewModel.removeFromFavourite(it)
+                viewModel.loadCurrencyList()
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.loadCurrency.collect {
+                        currencyAdapter.submitList(it)
+                    }
+                }
+
+            } else {
+                viewModel.addToFavourite(it)
+                viewModel.loadCurrencyList()
+                currencyAdapter.notifyDataSetChanged()
             }
         }
     }

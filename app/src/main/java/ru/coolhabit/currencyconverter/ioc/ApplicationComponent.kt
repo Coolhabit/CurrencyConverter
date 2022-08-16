@@ -10,6 +10,9 @@ import ru.coolhabit.currencyconverter.ioc.modules.ActivityModule
 import ru.coolhabit.currencyconverter.ioc.modules.ApiModule
 import ru.coolhabit.currencyconverter.ioc.modules.ApplicationModule
 import ru.coolhabit.currencyconverter.ioc.modules.FragmentsModule
+import ru.coolhabit.currencyconverter.ioc.modules.NavigationRoutersModule
+import ru.coolhabit.currencyconverter.ioc.modules.StoragesModule
+import ru.coolhabit.currencyconverter.ioc.modules.UseCasesModule
 import ru.coolhabit.currencyconverter.ioc.modules.ViewModelModule
 import javax.inject.Singleton
 
@@ -21,11 +24,11 @@ import javax.inject.Singleton
         ActivityModule::class,
         ApplicationModule::class,
         FragmentsModule::class,
-//        UseCasesModule::class,
-//        NavigationRoutersModule::class,
+        UseCasesModule::class,
+        NavigationRoutersModule::class,
         ApiModule::class,
         RemoteModule::class,
-//        StoragesModule::class,
+        StoragesModule::class,
     ]
 )
 interface ApplicationComponent : AndroidInjector<ConcurrencyApp> {

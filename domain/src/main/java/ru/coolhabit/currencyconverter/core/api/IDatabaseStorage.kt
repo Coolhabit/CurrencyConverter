@@ -1,6 +1,5 @@
 package ru.coolhabit.currencyconverter.core.api
 
-import kotlinx.coroutines.flow.Flow
 import ru.coolhabit.currencyconverter.entities.dto.Currency
 
 interface IDatabaseStorage {
@@ -9,5 +8,5 @@ interface IDatabaseStorage {
 
     suspend fun removeCurrencyFromFav(currency: Currency)
 
-    fun getFavouriteCurrency(): Flow<List<Currency>>
+    suspend fun getFavouriteCurrency(): List<Currency>
 }

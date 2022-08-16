@@ -6,5 +6,6 @@ fun Pair<String, Double>.toCurrency(): Currency {
     return Currency(
         currencyName = first,
         currencyRate = second,
+        isFav = false,
     )
 }

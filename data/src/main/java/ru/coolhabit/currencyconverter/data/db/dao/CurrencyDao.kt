@@ -19,5 +19,5 @@ interface CurrencyDao {
     suspend fun delete(currency: CurrencyDB)
 
     @Query("SELECT * FROM $DATABASE_NAME")
-    fun getFavouriteHeroes(): Flow<List<CurrencyDB>>
+    suspend fun getFavouriteHeroes(): List<CurrencyDB>
 }
