@@ -13,12 +13,21 @@ class CurrencyViewModel @Inject constructor(
     private val useCase: CurrencyUseCase,
 ) : ViewModel() {
 
+    private val _loadList = MutableSharedFlow<List<String>>()
+    val loadList = _loadList.asSharedFlow()
+
     private val _loadCurrency = MutableSharedFlow<List<Currency>>()
     val loadCurrency = _loadCurrency.asSharedFlow()
 
     fun loadCurrencyList() {
         viewModelScope.launch {
             _loadCurrency.emit(useCase.getCurrencyList())
+        }
+    }
+
+    fun loadCurrencies() {
+        viewModelScope.launch {
+            _loadList.emit(useCase.getCurrencies())
         }
     }
 

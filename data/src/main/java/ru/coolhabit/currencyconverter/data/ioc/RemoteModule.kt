@@ -11,7 +11,7 @@ import ru.coolhabit.currencyconverter.data.utils.API
 import ru.coolhabit.currencyconverter.data.utils.ApiConstants
 import javax.inject.Singleton
 
-private const val APIKEY = "apikey"
+private const val APIKEY = "app_id"
 
 @Module
 class RemoteModule {
