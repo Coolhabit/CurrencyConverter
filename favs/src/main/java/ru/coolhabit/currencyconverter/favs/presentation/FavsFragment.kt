@@ -63,6 +63,15 @@ class FavsFragment : BaseFragment(R.layout.fragment_favs) {
 
         favsAdapter.onDeleteClick = {
             viewModel.removeFromFavourite(it)
+            updateList()
+        }
+    }
+
+    fun updateList() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.loadList.collect {
+                favsAdapter.submitList(it)
+            }
         }
     }
 }

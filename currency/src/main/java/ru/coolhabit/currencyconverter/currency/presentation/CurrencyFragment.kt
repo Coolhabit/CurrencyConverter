@@ -63,17 +63,19 @@ class CurrencyFragment : BaseFragment(R.layout.fragment_currency) {
         currencyAdapter.onFavClick = {
             if (it.isFav) {
                 viewModel.removeFromFavourite(it)
-                viewModel.loadCurrencyList()
-                viewLifecycleOwner.lifecycleScope.launch {
-                    viewModel.loadCurrency.collect {
-                        currencyAdapter.submitList(it)
-                    }
-                }
+                updateList()
 
             } else {
                 viewModel.addToFavourite(it)
-                viewModel.loadCurrencyList()
-                currencyAdapter.notifyDataSetChanged()
+                updateList()
+            }
+        }
+    }
+
+    fun updateList() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.loadCurrency.collect {
+                currencyAdapter.submitList(it)
             }
         }
     }

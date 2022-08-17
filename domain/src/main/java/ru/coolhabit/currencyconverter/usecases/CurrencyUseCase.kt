@@ -3,6 +3,7 @@ package ru.coolhabit.currencyconverter.usecases
 import ru.coolhabit.currencyconverter.core.api.ICurrencyApiService
 import ru.coolhabit.currencyconverter.core.api.IDatabaseStorage
 import ru.coolhabit.currencyconverter.entities.dto.Currency
+import ru.coolhabit.currencyconverter.entities.dto.Symbol
 import javax.inject.Inject
 
 class CurrencyUseCase @Inject constructor(
@@ -13,9 +14,14 @@ class CurrencyUseCase @Inject constructor(
     suspend fun getCurrencyList(): List<Currency> {
         val favList = getFavouritesList()
         val currentList = service.getLatestRates()
-        currentList.find { it in favList }?.isFav = true
-
+        currentList.map {
+            it.isFav = favList.any { fav -> fav.currencyName == it.currencyName }
+        }
         return currentList
+    }
+
+    suspend fun getSymbolsList(): List<Symbol> {
+        return service.getSymbols()
     }
 
     suspend fun addCurrencyToFav(currency: Currency) {
