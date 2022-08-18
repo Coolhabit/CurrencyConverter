@@ -2,12 +2,10 @@ package ru.coolhabit.currencyconverter.data.ioc
 
 import dagger.Module
 import dagger.Provides
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.coolhabit.currencyconverter.data.network.CurrencyApi
-import ru.coolhabit.currencyconverter.data.utils.API
 import ru.coolhabit.currencyconverter.data.utils.ApiConstants
 import javax.inject.Singleton
 
