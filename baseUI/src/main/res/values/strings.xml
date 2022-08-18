@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">CurrencyConverter</string>
     <string name="base_currency">Base currency</string>
+    
+    <string name="sort_alphabet_asc">по алфавиту(возрастание)</string>
+    <string name="sort_alphabet_desc">по алфавиту(убывание)</string>
+    <string name="sort_value_asc">по значению(возрастание)</string>
+    <string name="sort_value_desc">по значению(убывание)</string>
 </resources>

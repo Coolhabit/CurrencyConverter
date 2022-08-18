@@ -21,7 +21,6 @@ class CurrencyApiService(private val api: CurrencyApi) : ICurrencyApiService {
         return result
     }
 
-
     override suspend fun getCurrencies(): List<String> {
         val result = api.getLatest().rates.toList().map {
             it.first

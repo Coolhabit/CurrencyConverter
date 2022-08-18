@@ -5,7 +5,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
 import ru.coolhabit.currencyconverter.data.db.AppDatabase.Companion.DATABASE_NAME
 import ru.coolhabit.currencyconverter.data.db.entities.CurrencyDB
 
