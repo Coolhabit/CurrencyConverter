@@ -6,4 +6,5 @@
     app:startDestination="@+id/latest_graph">
 
     <include app:graph="@navigation/latest_graph" />
+    <include app:graph="@navigation/favourites_graph" />
 </navigation>
