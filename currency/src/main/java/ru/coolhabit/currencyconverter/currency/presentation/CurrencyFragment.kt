@@ -2,12 +2,10 @@ package ru.coolhabit.currencyconverter.currency.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.lifecycleScope
@@ -34,8 +32,7 @@ class CurrencyFragment : BaseFragment(R.layout.fragment_currency) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.loadRatesList()
-        viewModel.loadCurrencies()
+        viewModel.initLoad()
     }
 
     override fun onCreateView(
@@ -76,14 +73,14 @@ class CurrencyFragment : BaseFragment(R.layout.fragment_currency) {
 
     private fun baseCurrencyController() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.currencies.collect {
-                val items = it
+            viewModel.loadData.collect {
+                val items = it.currencies
                 val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
                 (binding.currencyMenu.editText as? AutoCompleteTextView)?.setAdapter(adapter)
                 (binding.currencyMenu.editText as? AutoCompleteTextView)?.setOnItemClickListener { adapterView, view, position, id ->
                     val selectedValue = adapter.getItem(position)
                     viewModel.baseCurrency = selectedValue
-                    viewModel.loadRatesList()
+                    viewModel.initLoad()
                 }
             }
         }
@@ -91,16 +88,16 @@ class CurrencyFragment : BaseFragment(R.layout.fragment_currency) {
 
     private fun submitList() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.loadList.collect {
-                currencyAdapter.submitList(it)
+            viewModel.loadData.collect {
+                currencyAdapter.submitList(it.list)
             }
         }
     }
 
     private fun updateList() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.loadList.collect {
-                currencyAdapter.submitList(it)
+            viewModel.loadData.collect {
+                currencyAdapter.submitList(it.list)
             }
         }
     }
@@ -145,7 +142,7 @@ class CurrencyFragment : BaseFragment(R.layout.fragment_currency) {
 
     private fun setSorting(sort: SortType) {
         viewModel.sortType = sort
-        viewModel.loadRatesList()
+        viewModel.initLoad()
         binding.rvCurrency.layoutManager?.smoothScrollToPosition(binding.rvCurrency, RecyclerView.State(), RV_START)
     }
 }

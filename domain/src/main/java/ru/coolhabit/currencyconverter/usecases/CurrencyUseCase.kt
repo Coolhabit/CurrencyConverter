@@ -3,6 +3,7 @@ package ru.coolhabit.currencyconverter.usecases
 import ru.coolhabit.currencyconverter.core.api.ICurrencyApiService
 import ru.coolhabit.currencyconverter.core.api.IDatabaseStorage
 import ru.coolhabit.currencyconverter.entities.dto.Currency
+import ru.coolhabit.currencyconverter.entities.dto.CurrencyData
 import ru.coolhabit.currencyconverter.entities.dto.SortType
 import javax.inject.Inject
 
@@ -11,7 +12,14 @@ class CurrencyUseCase @Inject constructor(
     private val database: IDatabaseStorage,
 ) {
 
-    suspend fun loadRatesList(base: String?, sortType: SortType?): List<Currency> {
+    suspend fun loadCurrencyData(base: String?, sortType: SortType?): CurrencyData {
+        return CurrencyData(
+            list = loadRatesList(base, sortType),
+            currencies = service.getCurrencies()
+        )
+    }
+
+    private suspend fun loadRatesList(base: String?, sortType: SortType?): List<Currency> {
         val favList = database.getFavouritesList()
         val currentList = service.getLatestRates(base)
         currentList.map {
@@ -32,9 +40,5 @@ class CurrencyUseCase @Inject constructor(
 
     suspend fun removeCurrencyFromFav(currency: Currency) {
         database.removeCurrencyFromFav(currency)
-    }
-
-    suspend fun loadCurrencies(): List<String> {
-        return service.getCurrencies()
     }
 }

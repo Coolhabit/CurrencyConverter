@@ -32,8 +32,7 @@ class FavsFragment : BaseFragment(R.layout.fragment_favs) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.loadFavRatesList()
-        viewModel.loadCurrencies()
+        viewModel.initFavLoad()
     }
 
     override fun onCreateView(
@@ -75,14 +74,14 @@ class FavsFragment : BaseFragment(R.layout.fragment_favs) {
 
     private fun baseCurrencyController() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.currencies.collect {
-                val items = it
+            viewModel.loadFavData.collect {
+                val items = it.currencies
                 val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
                 (binding.favouritesMenu.editText as? AutoCompleteTextView)?.setAdapter(adapter)
                 (binding.favouritesMenu.editText as? AutoCompleteTextView)?.setOnItemClickListener { adapterView, view, position, id ->
                     val selectedValue = adapter.getItem(position)
                     viewModel.baseCurrency = selectedValue
-                    viewModel.loadFavRatesList()
+                    viewModel.initFavLoad()
                 }
             }
 
@@ -98,16 +97,16 @@ class FavsFragment : BaseFragment(R.layout.fragment_favs) {
 
     private fun submitList() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.loadList.collect {
-                favsAdapter.submitList(it)
+            viewModel.loadFavData.collect {
+                favsAdapter.submitList(it.list)
             }
         }
     }
 
     private fun updateList() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.loadList.collect {
-                favsAdapter.submitList(it)
+            viewModel.loadFavData.collect {
+                favsAdapter.submitList(it.list)
             }
         }
     }
@@ -139,7 +138,7 @@ class FavsFragment : BaseFragment(R.layout.fragment_favs) {
 
     private fun setSorting(sort: SortType) {
         viewModel.sortType = sort
-        viewModel.loadFavRatesList()
+        viewModel.initFavLoad()
         binding.rvFavourites.layoutManager?.smoothScrollToPosition(binding.rvFavourites, RecyclerView.State(), RV_START)
     }
 }
