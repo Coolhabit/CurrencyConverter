@@ -27,7 +27,7 @@ class CurrencyFragment : BaseFragment(R.layout.fragment_currency) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.loadCurrencyList()
+        viewModel.loadRatesList()
         viewModel.loadCurrencies()
     }
 
@@ -57,12 +57,45 @@ class CurrencyFragment : BaseFragment(R.layout.fragment_currency) {
             )
         }
 
+        submitList()
+
+        favClick()
+
+        baseCurrencyController()
+    }
+
+    private fun baseCurrencyController() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.loadCurrency.collect {
+            viewModel.currencies.collect {
+                val items = it
+                val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
+                (binding.currencyMenu.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+                (binding.currencyMenu.editText as? AutoCompleteTextView)?.setOnItemClickListener { adapterView, view, position, id ->
+                    val selectedValue = adapter.getItem(position)
+                    viewModel.baseCurrency = selectedValue
+                    viewModel.loadRatesList()
+                }
+            }
+        }
+    }
+
+    private fun submitList() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.loadList.collect {
                 currencyAdapter.submitList(it)
             }
         }
+    }
 
+    private fun updateList() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.loadList.collect {
+                currencyAdapter.submitList(it)
+            }
+        }
+    }
+
+    private fun favClick() {
         currencyAdapter.onFavClick = {
             if (it.isFav) {
                 viewModel.removeFromFavourite(it)
@@ -71,27 +104,6 @@ class CurrencyFragment : BaseFragment(R.layout.fragment_currency) {
             } else {
                 viewModel.addToFavourite(it)
                 updateList()
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.loadList.collect {
-                val items = it
-                val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
-                (binding.currencyMenu.editText as? AutoCompleteTextView)?.setAdapter(adapter)
-                (binding.currencyMenu.editText as? AutoCompleteTextView)?.setOnItemClickListener { adapterView, view, position, id ->
-                    val selectedValue = adapter.getItem(position)
-                    viewModel.getBaseList(selectedValue)
-                }
-            }
-
-        }
-    }
-
-    private fun updateList() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.loadCurrency.collect {
-                currencyAdapter.submitList(it)
             }
         }
     }

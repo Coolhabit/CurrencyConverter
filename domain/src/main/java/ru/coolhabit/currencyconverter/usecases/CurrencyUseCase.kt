@@ -9,18 +9,10 @@ class CurrencyUseCase @Inject constructor(
     private val service: ICurrencyApiService,
     private val database: IDatabaseStorage,
 ) {
-    suspend fun getCurrencyList(): List<Currency> {
-        val favList = getFavouritesList()
-        val currentList = service.getLatestRates()
-        currentList.map {
-            it.isFav = favList.any { fav -> fav.currencyName == it.currencyName }
-        }
-        return currentList
-    }
 
-    suspend fun getBaseRatesList(base: String?): List<Currency> {
-        val favList = getFavouritesList()
-        val currentList = service.getBaseRates(base)
+    suspend fun loadRatesList(base: String?): List<Currency> {
+        val favList = database.getFavouritesList()
+        val currentList = service.getLatestRates(base)
         currentList.map {
             it.isFav = favList.any { fav -> fav.currencyName == it.currencyName }
         }
@@ -35,11 +27,7 @@ class CurrencyUseCase @Inject constructor(
         database.removeCurrencyFromFav(currency)
     }
 
-    private suspend fun getFavouritesList(): List<Currency> {
-        return database.getFavouriteCurrency()
-    }
-
-    suspend fun getCurrencies(): List<String> {
+    suspend fun loadCurrencies(): List<String> {
         return service.getCurrencies()
     }
 }

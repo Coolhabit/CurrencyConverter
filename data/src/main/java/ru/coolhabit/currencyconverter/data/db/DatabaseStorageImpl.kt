@@ -22,7 +22,7 @@ class DatabaseStorageImpl(context: Context) : IDatabaseStorage {
         database.currencyDao().delete(currency.toData())
     }
 
-    override suspend fun getFavouriteCurrency(): List<Currency> {
+    override suspend fun getFavouritesList(): List<Currency> {
         return database.currencyDao().getFavouriteHeroes().map { it.toDomain() }
     }
 }

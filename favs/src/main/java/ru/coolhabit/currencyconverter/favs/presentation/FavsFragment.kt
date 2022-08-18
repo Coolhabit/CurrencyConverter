@@ -27,7 +27,7 @@ class FavsFragment : BaseFragment(R.layout.fragment_favs) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.loadFavList(null)
+        viewModel.loadFavRatesList()
         viewModel.loadCurrencies()
     }
 
@@ -58,32 +58,45 @@ class FavsFragment : BaseFragment(R.layout.fragment_favs) {
             )
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.loadList.collect {
-                favsAdapter.submitList(it)
-            }
-        }
+        submitList()
 
-        favsAdapter.onDeleteClick = {
-            viewModel.removeFromFavourite(null, it)
-            updateList()
-        }
+        deleteClick()
 
+        baseCurrencyController()
+    }
+
+    private fun baseCurrencyController() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.loadSymbols.collect {
+            viewModel.currencies.collect {
                 val items = it
                 val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
                 (binding.favouritesMenu.editText as? AutoCompleteTextView)?.setAdapter(adapter)
                 (binding.favouritesMenu.editText as? AutoCompleteTextView)?.setOnItemClickListener { adapterView, view, position, id ->
                     val selectedValue = adapter.getItem(position)
-                    viewModel.loadFavList(selectedValue)
+                    viewModel.baseCurrency = selectedValue
+                    viewModel.loadFavRatesList()
                 }
             }
 
         }
     }
 
-    fun updateList() {
+    private fun deleteClick() {
+        favsAdapter.onDeleteClick = {
+            viewModel.removeFromFavourite(it)
+            updateList()
+        }
+    }
+
+    private fun submitList() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.loadList.collect {
+                favsAdapter.submitList(it)
+            }
+        }
+    }
+
+    private fun updateList() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.loadList.collect {
                 favsAdapter.submitList(it)

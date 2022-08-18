@@ -14,29 +14,31 @@ class FavsViewModel @Inject constructor(
     private val useCase: FavsUseCase,
 ) : ViewModel() {
 
+    var baseCurrency: String? = null
+
     private val _loadList = MutableSharedFlow<List<Currency>>()
     val loadList: Flow<List<Currency>>
         get() = _loadList
 
-    private val _loadSymbols = MutableSharedFlow<List<String>>()
-    val loadSymbols = _loadSymbols.asSharedFlow()
+    private val _currencies = MutableSharedFlow<List<String>>()
+    val currencies = _currencies.asSharedFlow()
+
+    fun loadFavRatesList() {
+        viewModelScope.launch {
+            _loadList.emit(useCase.loadFavRatesList(baseCurrency))
+        }
+    }
 
     fun loadCurrencies() {
         viewModelScope.launch {
-            _loadSymbols.emit(useCase.getCurrencies())
+            _currencies.emit(useCase.loadCurrencies())
         }
     }
 
-    fun loadFavList(base: String?) {
-        viewModelScope.launch {
-            _loadList.emit(useCase.getFavRates(base))
-        }
-    }
-
-    fun removeFromFavourite(base: String?, currency: Currency) {
+    fun removeFromFavourite(currency: Currency) {
         viewModelScope.launch {
             useCase.removeCurrencyFromFav(currency)
-            loadFavList(base)
+            loadFavRatesList()
         }
     }
 }

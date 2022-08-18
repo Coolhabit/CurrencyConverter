@@ -11,21 +11,16 @@ class FavsUseCase @Inject constructor(
     private val database: IDatabaseStorage,
 ) {
 
-    suspend fun getFavRates(base: String?): List<Currency> {
-        val favs = database.getFavouriteCurrency().toSymbols()
-        println(favs)
-        return service.getFavRates(base, favs)
+    suspend fun loadFavRatesList(base: String?): List<Currency> {
+        val favouritesList = database.getFavouritesList().toSymbols()
+        return service.getFavouriteRates(base, favouritesList)
     }
 
     suspend fun removeCurrencyFromFav(currency: Currency) {
         database.removeCurrencyFromFav(currency)
     }
 
-    suspend fun getFavouritesList(): List<Currency> {
-        return database.getFavouriteCurrency()
-    }
-
-    suspend fun getCurrencies(): List<String> {
+    suspend fun loadCurrencies(): List<String> {
         return service.getCurrencies()
     }
 }

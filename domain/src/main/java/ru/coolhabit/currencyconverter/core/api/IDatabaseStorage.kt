@@ -8,5 +8,5 @@ interface IDatabaseStorage {
 
     suspend fun removeCurrencyFromFav(currency: Currency)
 
-    suspend fun getFavouriteCurrency(): List<Currency>
+    suspend fun getFavouritesList(): List<Currency>
 }

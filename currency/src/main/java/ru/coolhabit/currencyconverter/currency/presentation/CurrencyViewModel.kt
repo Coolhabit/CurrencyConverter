@@ -13,41 +13,37 @@ class CurrencyViewModel @Inject constructor(
     private val useCase: CurrencyUseCase,
 ) : ViewModel() {
 
-    private val _loadList = MutableSharedFlow<List<String>>()
+    var baseCurrency: String? = null
+
+    private val _loadList = MutableSharedFlow<List<Currency>>()
     val loadList = _loadList.asSharedFlow()
 
-    private val _loadCurrency = MutableSharedFlow<List<Currency>>()
-    val loadCurrency = _loadCurrency.asSharedFlow()
+    private val _currencies = MutableSharedFlow<List<String>>()
+    val currencies = _currencies.asSharedFlow()
 
-    fun loadCurrencyList() {
+    fun loadRatesList() {
         viewModelScope.launch {
-            _loadCurrency.emit(useCase.getCurrencyList())
+            _loadList.emit(useCase.loadRatesList(baseCurrency))
         }
     }
 
     fun loadCurrencies() {
         viewModelScope.launch {
-            _loadList.emit(useCase.getCurrencies())
-        }
-    }
-
-    fun getBaseList(base: String?) {
-        viewModelScope.launch {
-            _loadCurrency.emit(useCase.getBaseRatesList(base))
+            _currencies.emit(useCase.loadCurrencies())
         }
     }
 
     fun addToFavourite(currency: Currency) {
         viewModelScope.launch {
             useCase.addCurrencyToFav(currency)
-            loadCurrencyList()
+            loadRatesList()
         }
     }
 
     fun removeFromFavourite(currency: Currency) {
         viewModelScope.launch {
             useCase.removeCurrencyFromFav(currency)
-            loadCurrencyList()
+            loadRatesList()
         }
     }
 }
