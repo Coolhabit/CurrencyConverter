@@ -1,18 +1,24 @@
 plugins {
     id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id "androidx.navigation.safeargs.kotlin"
+    id 'kotlin-parcelize'
 }
 
+apply from: '../dependencies.gradle'
+
 android {
-    compileSdk 32
+    compileSdk compSdkVersion
 
     defaultConfig {
         applicationId "ru.coolhabit.currencyconverter"
-        minSdk 21
-        targetSdk 32
+        minSdkVersion mSdkVersion
+        targetSdkVersion tarSdkVersion
         versionCode 1
         versionName "1.0"
-
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -22,22 +28,69 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildFeatures {
+        viewBinding true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+        // Flag to enable support for the new language APIs
+        coreLibraryDesugaringEnabled true
     }
+
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        freeCompilerArgs += [
+                "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
+        ]
+    }
+
+    kapt {
+        arguments {
+            arg("dagger.fastInit", "enabled")
+        }
     }
 }
 
 dependencies {
+    testImplementation junit
+    androidTestImplementation android_test
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.5.0'
-    implementation 'com.google.android.material:material:1.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation appcompat
+    implementation material
+    implementation constraintlayout
+    coreLibraryDesugaring desugaring
+
+    implementation core_ktx
+    kapt kotlinx_metadata
+    coreLibraryDesugaring desugaring
+
+    // coroutines
+    implementation kotlinx_coroutines_core
+    implementation kotlinx_coroutines_android
+
+    // dagger 2
+    implementation dagger
+    implementation dagger_android
+    implementation dagger_android_support
+    kapt dagger_android_processor
+    kapt dagger_compiler
+
+    // navigation
+    implementation navigation_fragment_ktx
+    implementation navigation_ui_ktx
+
+    implementation okhttp
+
+    implementation retrofit
+    implementation retrofit_gson
+    implementation retrofit_log
+
+    implementation project(':baseUI')
+    implementation project(':data')
+    implementation project(':domain')
+    implementation project(':currency')
+    implementation project(':favs')
 }
