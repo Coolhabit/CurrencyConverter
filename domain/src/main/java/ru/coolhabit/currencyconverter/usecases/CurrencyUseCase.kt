@@ -18,6 +18,15 @@ class CurrencyUseCase @Inject constructor(
         return currentList
     }
 
+    suspend fun getBaseRatesList(base: String?): List<Currency> {
+        val favList = getFavouritesList()
+        val currentList = service.getBaseRates(base)
+        currentList.map {
+            it.isFav = favList.any { fav -> fav.currencyName == it.currencyName }
+        }
+        return currentList
+    }
+
     suspend fun addCurrencyToFav(currency: Currency) {
         database.addCurrencyToFav(currency)
     }

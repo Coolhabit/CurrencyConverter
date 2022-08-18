@@ -7,9 +7,12 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/currency_menu"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
         android:hint="@string/base_currency"
+        app:boxBackgroundColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/filter_btn"
         app:layout_constraintBottom_toTopOf="@id/rvCurrency"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -19,10 +22,21 @@
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/filter_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/ic_baseline_sort_24"
+        app:layout_constraintStart_toEndOf="@id/currency_menu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/rvCurrency"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCurrency"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/size_0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/currency_menu" />
 

@@ -21,7 +21,7 @@ class RemoteModule {
         .addInterceptor { chain ->
             val request = chain.request()
             val url = request.url.newBuilder()
-                .addQueryParameter(APIKEY, API.API_KEY)
+//                .addQueryParameter(APIKEY, API.API_KEY)
                 .build()
             val resultRequest = request.newBuilder().url(url).build()
             chain.proceed(resultRequest)

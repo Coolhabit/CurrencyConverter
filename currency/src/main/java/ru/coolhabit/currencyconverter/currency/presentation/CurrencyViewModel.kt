@@ -31,6 +31,12 @@ class CurrencyViewModel @Inject constructor(
         }
     }
 
+    fun getBaseList(base: String?) {
+        viewModelScope.launch {
+            _loadCurrency.emit(useCase.getBaseRatesList(base))
+        }
+    }
+
     fun addToFavourite(currency: Currency) {
         viewModelScope.launch {
             useCase.addCurrencyToFav(currency)

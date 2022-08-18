@@ -6,5 +6,7 @@ interface ICurrencyApiService {
 
     suspend fun getLatestRates(): List<Currency>
 
+    suspend fun getBaseRates(base: String?): List<Currency>
+
     suspend fun getCurrencies(): List<String>
 }

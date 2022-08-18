@@ -81,9 +81,10 @@ class CurrencyFragment : BaseFragment(R.layout.fragment_currency) {
                 (binding.currencyMenu.editText as? AutoCompleteTextView)?.setAdapter(adapter)
                 (binding.currencyMenu.editText as? AutoCompleteTextView)?.setOnItemClickListener { adapterView, view, position, id ->
                     val selectedValue = adapter.getItem(position)
-                    println(selectedValue)
+                    viewModel.getBaseList(selectedValue)
                 }
             }
+
         }
     }
 
