@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/alp_asc"
+        android:title="@string/sort_alphabet_asc" />
+    <item android:id="@+id/alp_desc"
+        android:title="@string/sort_alphabet_desc" />
+    <item android:id="@+id/value_asc"
+        android:title="@string/sort_value_asc" />
+    <item android:id="@+id/value_desc"
+        android:title="@string/sort_value_desc" />
+</menu>

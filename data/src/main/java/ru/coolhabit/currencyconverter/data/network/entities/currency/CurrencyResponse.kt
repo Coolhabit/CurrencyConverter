@@ -2,11 +2,15 @@ package ru.coolhabit.currencyconverter.data.network.entities.currency
 
 import com.google.gson.annotations.SerializedName
 
+private const val BASE = "base"
+private const val RATES = "rates"
+private const val SUCCESS = "success"
+
 data class CurrencyResponse(
-    @SerializedName("base")
+    @SerializedName(BASE)
     val base: String,
-    @SerializedName("rates")
+    @SerializedName(RATES)
     val rates: Map<String, Double>,
-    @SerializedName("success")
+    @SerializedName(SUCCESS)
     val success: Boolean,
 )
