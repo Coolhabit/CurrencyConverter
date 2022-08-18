@@ -8,5 +8,7 @@ interface ICurrencyApiService {
 
     suspend fun getBaseRates(base: String?): List<Currency>
 
+    suspend fun getFavRates(base: String?, symbols: String?): List<Currency>
+
     suspend fun getCurrencies(): List<String>
 }

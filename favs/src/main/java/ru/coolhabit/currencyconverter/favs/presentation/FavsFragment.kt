@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.collect
@@ -25,7 +27,8 @@ class FavsFragment : BaseFragment(R.layout.fragment_favs) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.loadFavList()
+        viewModel.loadFavList(null)
+        viewModel.loadCurrencies()
     }
 
     override fun onCreateView(
@@ -62,8 +65,21 @@ class FavsFragment : BaseFragment(R.layout.fragment_favs) {
         }
 
         favsAdapter.onDeleteClick = {
-            viewModel.removeFromFavourite(it)
+            viewModel.removeFromFavourite(null, it)
             updateList()
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.loadSymbols.collect {
+                val items = it
+                val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
+                (binding.favouritesMenu.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+                (binding.favouritesMenu.editText as? AutoCompleteTextView)?.setOnItemClickListener { adapterView, view, position, id ->
+                    val selectedValue = adapter.getItem(position)
+                    viewModel.loadFavList(selectedValue)
+                }
+            }
+
         }
     }
 

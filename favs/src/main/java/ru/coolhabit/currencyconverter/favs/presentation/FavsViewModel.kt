@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import ru.coolhabit.currencyconverter.entities.dto.Currency
 import ru.coolhabit.currencyconverter.usecases.FavsUseCase
@@ -17,16 +18,25 @@ class FavsViewModel @Inject constructor(
     val loadList: Flow<List<Currency>>
         get() = _loadList
 
-    fun loadFavList() {
+    private val _loadSymbols = MutableSharedFlow<List<String>>()
+    val loadSymbols = _loadSymbols.asSharedFlow()
+
+    fun loadCurrencies() {
         viewModelScope.launch {
-            _loadList.emit(useCase.getFavouritesList())
+            _loadSymbols.emit(useCase.getCurrencies())
         }
     }
 
-    fun removeFromFavourite(currency: Currency) {
+    fun loadFavList(base: String?) {
+        viewModelScope.launch {
+            _loadList.emit(useCase.getFavRates(base))
+        }
+    }
+
+    fun removeFromFavourite(base: String?, currency: Currency) {
         viewModelScope.launch {
             useCase.removeCurrencyFromFav(currency)
-            loadFavList()
+            loadFavList(base)
         }
     }
 }

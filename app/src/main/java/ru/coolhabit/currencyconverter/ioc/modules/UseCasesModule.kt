@@ -21,6 +21,7 @@ class UseCasesModule {
     @Provides
     @Singleton
     fun provideFavsUseCase(
+        service: ICurrencyApiService,
         database: IDatabaseStorage,
-    ) = FavsUseCase(database)
+    ) = FavsUseCase(service, database)
 }

@@ -8,6 +8,7 @@ interface CurrencyApi {
 
     @GET("latest")
     suspend fun getLatest(
-        @Query("base") base: String? = null
+        @Query("base") base: String? = null,
+        @Query("symbols") symbols: String? = null,
     ): CurrencyResponse
 }
