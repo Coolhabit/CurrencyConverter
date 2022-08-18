@@ -6,15 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import androidx.annotation.MenuRes
+import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import ru.coolhabit.currencyconverter.entities.dto.SortType
 import ru.coolhabit.currencyconverter.favs.R
 import ru.coolhabit.currencyconverter.favs.databinding.FragmentFavsBinding
 import ru.coolhabit.currencyconverter.favs.presentation.adapter.FavsListAdapter
 import ru.coolhabit.currencyconverter.presentation.adapter.ItemDecoration
 import ru.coolhabit.currencyconverter.presentation.base.BaseFragment
+import ru.coolhabit.currencyconverter.presentation.extensions.RV_START
 import javax.inject.Inject
 
 class FavsFragment : BaseFragment(R.layout.fragment_favs) {
@@ -41,6 +46,9 @@ class FavsFragment : BaseFragment(R.layout.fragment_favs) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.filterBtn.setOnClickListener {
+            showMenu(it, ru.coolhabit.R.menu.popup_menu)
+        }
 
         binding.rvFavourites.apply {
             adapter = favsAdapter
@@ -102,5 +110,36 @@ class FavsFragment : BaseFragment(R.layout.fragment_favs) {
                 favsAdapter.submitList(it)
             }
         }
+    }
+
+    private fun showMenu(v: View, @MenuRes menuRes: Int) {
+        val popup = PopupMenu(requireContext(), v)
+        popup.menuInflater.inflate(menuRes, popup.menu)
+
+        popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+            when (item.itemId) {
+                ru.coolhabit.R.id.alp_asc -> {
+                    setSorting(SortType.ALP_ASC)
+                }
+                ru.coolhabit.R.id.alp_desc -> {
+                    setSorting(SortType.ALP_DESC)
+                }
+                ru.coolhabit.R.id.value_asc -> {
+                    setSorting(SortType.VALUE_ASC)
+                }
+                ru.coolhabit.R.id.value_desc -> {
+                    setSorting(SortType.VALUE_DESC)
+                }
+            }
+            true
+        })
+
+        popup.show()
+    }
+
+    private fun setSorting(sort: SortType) {
+        viewModel.sortType = sort
+        viewModel.loadFavRatesList()
+        binding.rvFavourites.layoutManager?.smoothScrollToPosition(binding.rvFavourites, RecyclerView.State(), RV_START)
     }
 }

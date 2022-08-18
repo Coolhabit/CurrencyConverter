@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import ru.coolhabit.currencyconverter.entities.dto.Currency
+import ru.coolhabit.currencyconverter.entities.dto.SortType
 import ru.coolhabit.currencyconverter.usecases.CurrencyUseCase
 import javax.inject.Inject
 
@@ -13,6 +14,7 @@ class CurrencyViewModel @Inject constructor(
     private val useCase: CurrencyUseCase,
 ) : ViewModel() {
 
+    var sortType: SortType? = null
     var baseCurrency: String? = null
 
     private val _loadList = MutableSharedFlow<List<Currency>>()
@@ -23,7 +25,7 @@ class CurrencyViewModel @Inject constructor(
 
     fun loadRatesList() {
         viewModelScope.launch {
-            _loadList.emit(useCase.loadRatesList(baseCurrency))
+            _loadList.emit(useCase.loadRatesList(baseCurrency, sortType))
         }
     }
 
